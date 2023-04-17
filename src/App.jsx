@@ -9,8 +9,8 @@ function App() {
   const [getValue, setGetValue] = useState();
 
   const trans = {
-    value: "getValue",
-    setValue: "setGetValue",
+    value: getValue,
+    setValue: setGetValue,
   };
 
   return (
@@ -18,6 +18,7 @@ function App() {
     <Context.Provider value={trans}>
     <Routes>
     <Route path="/" element={<Page1 />} />
+    <Route path="page2" element={<Page2 />} />
     </Routes>
     </Context.Provider>
           </BrowserRouter>

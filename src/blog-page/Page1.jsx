@@ -1,34 +1,31 @@
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import Context from "../context/CreateContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
+import Page2 from "./Page2";
+
+
 
 function Input() {
-  const [input, getInput] = useState( {
-    title: '',
-    content : ''
-  })          // use state used for taking input from uset
+      const inputRef = useRef([]) // take input from user
 
-  const [click , setClick] = useState('')
-  
+      const Data = useContext(Context) //context assigning to a variable
+      const {value, setValue} = Data  // props values calling
 
-  const change = (e) => {
-    const titleValue = e.target.name
-    const contentValue = e.target.value
-    getInput({...input, [titleValue]:contentValue})
-  }   // onChange function
+      const Navigate = useNavigate();
 
-  console.log(input); // input consolling
-  
-  const handleClick = () => {
-    setClick(input)
-  }
-  
-  console.log(click); // input consolling
+      const handleSubmit = (event) =>{
+        event.preventDefault();
+        const values = inputRef.current.map(ref => ref.value);
+        setValue(values);
+        Navigate('Page2')
+      }     //Submit function
+
   return (
     <div>
+    <Form onSubmit={handleSubmit}>
       <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1" >
           Title{" "}
@@ -37,9 +34,8 @@ function Input() {
           placeholder="Title"
           aria-label="Username"
           aria-describedby="basic-addon1"
-          name="title"                    //for onchange
-          value={input.title}             //for onchange
-          onChange={change}
+          name="title"                    
+         ref={el => inputRef.current[0] = el}
         />
       </InputGroup>
 
@@ -49,17 +45,18 @@ function Input() {
           as="textarea"
           aria-label="With textarea"
           placeholder="Contenrt"
-          name = 'content'            //for onchange
-          value={input.content}       //for onchange
-          onChange={change}
+          name = 'content'            
+          ref={el => inputRef.current[1] = el}
         />
         <Button 
+        type="submit"
         variant="outline-success" 
-        onAbort={handleClick}
         >
           Upload
         </Button>{" "}
       </InputGroup>
+    </Form> 
+    <Link to='page2'>Gallery</Link>
     </div>
   );
 }
